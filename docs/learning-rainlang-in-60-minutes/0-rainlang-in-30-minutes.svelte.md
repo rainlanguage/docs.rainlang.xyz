@@ -158,14 +158,14 @@ It would look like:
 ```
 a: 1,
 b: 2,
-c: int-add(a b 3);
+c: add(a b 3);
 ```
 
 Note:
 
 - Lines end with `,`
 - The final line of the source ends with `;`
-- We use words like `int-add` by passing them inputs with `( )`
+- We use words like `add` by passing them inputs with `( )`
 - Once we name something on the LHS it is available as an input on the RHS
 - Everything is whitespace delimited (we DO NOT use `,` to delimit values)
 - There are no "operators" (e.g. `+` is not a thing), _everything_ is either a word or literal (which makes subparsers much easier to implement)
@@ -207,7 +207,7 @@ This works similarly to function arguments in other languages. Basically the sta
 
 ```
 input-1 input-2:,
-_: decimal18-div(input-1 input-2);
+_: div(input-1 input-2);
 ```
 
 This is only valid on lines before any RHS calculations have run. It is an error to try and define inputs after other LHS/RHS pairs have been defined.
@@ -247,11 +247,14 @@ Parse time inputs to the word are provided by `< >` (optional).
 
 Transaction time inputs to the word are provided by `( )`.
 
-For example, the word `decimal18-div` can either round values up or down. The rounding direction is a _parse time input_ and the values to divide are _transaction time inputs_. The default rounding direction is down, so we do not have to provide any parse time input if we're happy with that, but if we wanted to round up we would have to provide the parse time input `1`.
+For example, the word `div` can either round values up or down. The rounding
+direction is a _parse time input_ and the values to divide are _transaction time inputs_.
+The default rounding direction is down, so we do not have to provide any parse time
+input if we're happy with that, but if we wanted to round up we would have to provide the parse time input `1`.
 
-Decimal 18 division of `3/2`, rounding up:
+Division of `3/2`, rounding up:
 
-`decimal18-div<1>(3e18 2e18)`
+`div<1>(3e18 2e18)`
 
 Transaction time inputs can be literals, LHS items, or other RHS calculations.
 
@@ -259,9 +262,11 @@ Parse time inputs can only be literals.
 
 This would also be valid, assuming `[round-up]` and `a` were defined:
 
-`decimal18-div<[round-up]>(a decimal18-add(1e18 1e18))`
+`div<[round-up]>(a add(1e18 1e18))`
 
-In the same ways as sub parsed literals, if the parser finds a word that it does not know, it will hand off the word to each sub parser defined in the pragma, in order, until one of them successfully handles the word.
+In the same ways as sub parsed literals, if the parser finds a word that it does
+not know, it will hand off the word to each sub parser defined in the pragma, in
+order, until one of them successfully handles the word.
 
 ##### Multi-value LHS/RHS
 
@@ -275,7 +280,7 @@ Examples
 Valid because both RHS calculations return 1 value:
 
 ```
-a b: block-timestamp() int-add(1 2);
+a b: block-timestamp() add(1 2);
 ```
 
 Valid because the RHS calculation returns 2 values:
@@ -356,8 +361,8 @@ five six: call<1>(1 2);
 
 /* this source is index 1, it expects 2 inputs */
 one two:,
-three four: int-add(one two) 4,
-five six: 5 int-add(three three);
+three four: add(one two) 4,
+five six: 5 add(three three);
 ```
 
 It is an error to try to take more items off the called stack than exist in that stack.
@@ -374,7 +379,7 @@ one:;
 
 ## Data structures and execution
 
-Rainlang currently only has individual values (no lists) and there are no negative numbers or decimal numbers.
+Rainlang currently only has individual values (no lists) and there are no negative numbers or decimal float numbers.
 
 ### No negative numbers
 
@@ -386,19 +391,38 @@ One thing to note about this is that this makes subtracting below zero _an error
 
 For example, this will _revert_:
 
-`_:int-sub(2 3);`
+`_: sub(2 3);`
 
-### No decimal numbers
+### No decimal float numbers
 
-This is probably easier to fix than the negative number situation. Basically, there are no decimal numbers in the EVM at all. What is really happening when you have 1.5 DAI, is that you have `15e17` DAI, and then the token treats `1e18` as "one".
+Decimal numbers like `1.5` are currently represented in Rainlang as a fixed point
+18 decimal value under the hood. This means that `1.5` as a Rainlang literal is
+converted to `1.5e18`, i.e. `1.5 x 10^18`, on the EVM.
 
-If you're not familiar with `e` notation, basically it is the number of zeros to add after the digits. So `1e2` is `100` (2 zeros). `1e18` is a big number.
+This is because EVM only natively supports integer math, e.g. 3/2 = 1 and 2/3 = 0.
 
-Treating `1e18` as "one" is also the convention adopted by ETH itself, as there are `1e18` wei in a single ETH, similar to how there are 100 million satoshis in a bitcoin.
+There's no "official" conventions for handling decimal math, and every approach
+has tradeoffs. Notably, more sophistication and complexity means more gas per
+calculation.
 
-As this is the closest thing to an "official" decimal implementation, we adopt it by convention with most math functions having both an `int-` (integer) and `decimal18-` (fixed point decimal 18) version.
+The main issue with fixed point math is that precision loss is inevitable in
+certain circumstances.
 
-Over time we will probably move away from `int-` style words altogether and normalize everything around `decimal18` logic.
+Consider for example, a halflife function `0.5^t` where some value halves every
+unit of time. As all numbers are binary on the EVM, anything following this
+halflife function will lose exactly 1 bit of precision per unit of time `t`.
+
+Most of the time, starting with 18 decimal points of precision makes this more of
+a theoretical issue than practical, as that's 60 bits in the fractional component
+of any number. Unfortunately there _are_ edge cases that exist in defi that start
+to surface precision issues, such as running dutch auctions across tokens that
+have very different internal decimal scales (e.g. 6 for wbtc vs. 18 for DAI).
+
+Rainlang is moving towards a simplified version of decimal floats that are safer
+and more gas efficient than IEEE 754 floats (e.g. no NaN, infinity, etc.). This
+will use some more gas than the simple 18 fixed point implementation, but
+decouple precision from scale, removing a potentially large foot gun from
+Rainlang authors who don't know how to detect, let alone fix, precision issues.
 
 ### Only `0` is false
 
@@ -416,8 +440,8 @@ Usually you won't notice the difference between lazy/eager evaluation, but it ca
 
 For example, you may be tempted to avoid a negative number like this:
 
-`_: if(greater-than(big small) int-sub(big small) small);`
+`_: if(greater-than(big small) sub(big small) small);`
 
-But you'll find that `int-sub(big small)` _always_ runs, even if the `if` condition evaluates to false, and therefore still errors.
+But you'll find that `sub(big small)` _always_ runs, even if the `if` condition evaluates to false, and therefore still errors.
 
-In this case there is a `int-max` word that does the same thing without triggering errors.
+In this case there is a `max` word that does the same thing without triggering errors.

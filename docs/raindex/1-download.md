@@ -10,9 +10,9 @@ The app is in its early development stages and contracts are unaudited so be car
 
 Available for Intel or Apple Silicon running macOS 14.
 
-[Download (Apple Silicon - M1, M2 etc)](https://github.com/rainlanguage/rain.orderbook/releases/download/app-v0.0.0-3767aca6a41abfd6120fa0d2a114504a31772f10/Raindex_0.0.0_aarch64.dmg)
+[Download (Apple Silicon - M1, M2 etc)]https://github.com/rainlanguage/rain.orderbook/releases/download/app-v0.0.0-794bb26f9ca0de3835aa10821b4e7f34f104485e/Raindex_0.0.0_aarch64.dmg)
 
-[Download (Intel Mac)](https://github.com/rainlanguage/rain.orderbook/releases/download/app-v0.0.0-3767aca6a41abfd6120fa0d2a114504a31772f10/Raindex_0.0.0_x64.dmg)
+[Download (Intel Mac)](https://github.com/rainlanguage/rain.orderbook/releases/download/app-v0.0.0-794bb26f9ca0de3835aa10821b4e7f34f104485e/Raindex_0.0.0_x64.dmg)
 
 ## Linux and Windows support
 

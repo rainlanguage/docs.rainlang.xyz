@@ -1,13 +1,22 @@
 ---
 sidebar_position: 5
 ---
+# Getting started
+The easist place to get started with rainlang strategies is on Raindex. Browse strategies on https://raindex.finance/ for configurable and easy to deploy strategies. 
+
+Each strategy has a step by step configuration wizard with custom options as well as video explainers for complex strategies. 
+
+When you've created the strategy parameters you can see the rainlang before you deploy. 
+
 # Basic examples
 
 You'll find examples of strategies that you can try deploying, modifying and simulating on Github.
 
 https://github.com/rainlanguage/raindex.pubstrats
 
-Here are some of the strategies we've created so far. Most of these use the [Flare Time Series Oracle (FTSO)](https://flare.network/ftso/), a decentralized oracle available only on Flare. To allow users to access the FTSO price feeds in their strategies, there is a Flare-only subparser which extends the standard set of words available.
+# Flare examples
+
+Here are some of the strategies we've created for Flare network. Most of these use the [Flare Time Series Oracle (FTSO)](https://flare.network/ftso/), a decentralized oracle available only on Flare. To allow users to access the FTSO price feeds in their strategies, there is a Flare-only subparser which extends the standard set of words available.
 
 Note that these aren't necessarily fit for production use, as they are meant primarily as educational examples. Please be careful and always DYOR.
 

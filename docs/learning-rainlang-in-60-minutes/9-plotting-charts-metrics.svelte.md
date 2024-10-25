@@ -15,7 +15,7 @@ charts:
         description: 'Order ratio at which WETH was purchased.'
 ```
 <img src="/img/metrics.png" />
-- We can also plot any particular scenario within the raindex app. We simply name the scenario to plot and then expose observable plot config directly to the yaml. Here we plot the 
+-  We can also plot any particular scenario within the raindex app. We simply name the scenario to plot and then expose observable plot config directly to the yaml. Here we plot the 
 `limit-order.buy.prod` scenario which has its own bindings and runs. The `runs` for the plot define the number fuzz runs, where different values for the fuzz input are generated and the expression is evaluated for each of these. This particular plot shows that even if the output amount offered by the order changes, the io-ratio remains unchanged. 
 ```
   B. Limit order simulation:

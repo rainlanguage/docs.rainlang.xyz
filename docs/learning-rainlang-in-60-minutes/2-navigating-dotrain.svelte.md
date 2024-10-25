@@ -1,8 +1,32 @@
 # Navigating a ".rain" file
 
-Let's start by understanding a very simple `.rain` file a break it down into smaller parts. Let's create a new file and call it `limit-order.rain` and populate the file contains with the following strategy written in rainlang that allows us to buy `WETH` in exchange for USDC: 
+Let's start by understanding a very simple `.rain` file a break it down into smaller parts. Let's create a new file and call it `limit-order.rain` and populate the file contains with the following strategy written in rainlang that allows us to buy `WETH` in exchange for USDC on base network: 
 ```
 raindex-version : db14c87f012a76980661802ff424371d6e84552e
+
+networks:
+  base:
+    rpc: https://mainnet.base.org
+    chain-id: 8453
+    network-id: 8453
+    currency: ETH
+
+subgraphs:
+  base: https://api.goldsky.com/api/public/project_clv14x04y9kzi01saerx7bxpg/subgraphs/ob4-base/0.9/gn
+
+metaboards:
+  base: https://api.goldsky.com/api/public/project_clv14x04y9kzi01saerx7bxpg/subgraphs/mb-base-0x59401C93/0.1/gn
+
+orderbooks:
+  base:
+    address: 0xd2938e7c9fe3597f78832ce780feb61945c377d7
+    network: base
+    subgraph: base
+
+deployers:
+  base:
+    address: 0xC1A14cE2fd58A3A2f99deCb8eDd866204eE07f8D
+    network: base
 
 tokens:
   base-weth:
@@ -133,3 +157,4 @@ deployments:
  :;
 ```
 - The entire file is broadly divided into two sections - the yaml front matter and the rainlang fragment, separated by the `---` dellimeter. Theses fragment are composed to a rainlang document by the composition done by the tooling available via the raindex app.
+- Although the complete dotrain document includes all of the above mentioned keys present in the yaml structure, the `networks`, `subgraphs`, `metaboards`, `orderbooks` and `delpoyers` generally reamin common throughout dotrain documents, and are available as `settings` in the raindex app. Hence it is not uncommon to see dotrain documents without these settings are raindex tooling binds these elements during composition and deployment. 

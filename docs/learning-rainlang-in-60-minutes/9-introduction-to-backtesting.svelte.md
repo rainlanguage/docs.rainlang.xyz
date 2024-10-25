@@ -1,0 +1,3 @@
+# Introduction to Backtesting
+- It is also possible within the raindex app, to evaluate the result of the rainlang expression for historical blocks. This can be particularly useful to check how a strategy will perform for historical token prices and we can plot the resultant values within a separate plot. 
+- Note that the contract storage states are not presisted within successive runs for the block range.

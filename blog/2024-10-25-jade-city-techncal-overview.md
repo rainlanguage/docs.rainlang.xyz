@@ -13,7 +13,8 @@ Jade City is leveraging blockchain to democratize access to the $50+ billion glo
 
 The MVP is running on Base.
 
-![Uploading Screenshot 2024-10-24 at 13.45.54.png…]()
+<img width="1076" alt="Screenshot 2024-10-24 at 13 45 54" src="https://github.com/user-attachments/assets/dec59e36-e511-4bd9-acae-cc0478159fda">
+
 
 ### Key Platform Features
 
@@ -29,14 +30,14 @@ The MVP is running on Base.
    * The mine operator can deposit jade, mint tokens, and withdraw by burning corresponding receipts, and external auditors can audit the collateral on-chain to ensure transparency and produce their own certifications.
    * Retail traders can simply look at this on-chain data to verify the integrity of the system(the on-chain tokens and real world assets), and trade the tokens on any decentralized exchange providing liquidity for them.
 
-![Uploading Screenshot 2024-10-24 at 13.46.12.png…]()
+<img width="1076" alt="Screenshot 2024-10-24 at 13 46 12" src="https://github.com/user-attachments/assets/a9423064-ca1b-4305-a487-c50fae494b0c">
 
 3. **Jade-backed Jade Tokens**
    * We offer a jade-backed semi-fungible token(SFT) that is also compatible with ERC20 standards. Each unit of deposited jade is tied to certified metadata, certifying the weight, origin, and certification of the jade boulder by an external auditor, and can be traded in the digital market.
    * Anybody can simply read and verify the authenticity of the jade tokens by reviewing the on-chain data.
    * By ensuring the integrity between the digital and physical assets, we can offer digital assets backed by the real-world value of jade, which is now available to trade on-chain and can be seamlessly integrated into the DeFi ecosystem.
 
-![Uploading Screenshot 2024-10-24 at 13.46.21.png…]()
+<img width="1076" alt="Screenshot 2024-10-24 at 13 46 21" src="https://github.com/user-attachments/assets/f4fce482-e0bb-4d50-85db-dccdde4d58b2">
 
 ### Rainlang and Raindex integration
 

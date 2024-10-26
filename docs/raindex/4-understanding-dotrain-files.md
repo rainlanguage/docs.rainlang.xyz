@@ -1,6 +1,35 @@
-# Navigating a ".rain" file
+# Understanding dotrain files
 
-Let's start by understanding a very simple `.rain` file a break it down into smaller parts. Let's create a new file and call it `limit-order.rain` and populate the file contains with the following strategy written in rainlang that allows us to buy `WETH` in exchange for USDC on base network: 
+A dotrain (.rain) file is a configuration file that combines YAML front matter with rainlang fragments to define trading strategies and order parameters. 
+
+### File Structure
+A dotrain file consists of two main sections:
+
+* YAML Front Matter: Configuration metadata and settings
+* Rainlang Fragment: Strategy implementation code
+
+These sections are separated by a triple-dash delimiter (---).
+
+###  Components
+
+The following components are typically managed through the raindex app settings and don't need to be included in every dotrain file:
+
+* networks: Network configurations (RPC, chain ID, etc.)
+* subgraphs: GraphQL endpoint configurations
+* metaboards: Metaboard endpoint configurations
+* orderbooks: Orderbook contract addresses and networks
+* deployers: Deployment contract configurations
+
+The following components are typically managed through a dotrain file:
+
+* orders: Defines the order configurations including inputs and outputs
+* scenarios: Specifies different execution scenarios (prod, plot, backtest)
+* charts: Visualizes order metrics and simulations
+
+###  Example dotrain
+
+The code below is a limit order that buys `WETH` in exchange for USDC on the base network. 
+
 ```
 raindex-version : db14c87f012a76980661802ff424371d6e84552e
 
@@ -156,5 +185,3 @@ deployments:
 #handle-add-order
  :;
 ```
-- The entire file is broadly divided into two sections - the yaml front matter and the rainlang fragment, separated by the `---` dellimeter. Theses fragment are composed to a rainlang document by the composition done by the tooling available via the raindex app.
-- Although the complete dotrain document includes all of the above mentioned keys present in the yaml structure, the `networks`, `subgraphs`, `metaboards`, `orderbooks` and `delpoyers` generally reamin common throughout dotrain documents, and are available as `settings` in the raindex app. Hence it is not uncommon to see dotrain documents without these settings are raindex tooling binds these elements during composition and deployment. 

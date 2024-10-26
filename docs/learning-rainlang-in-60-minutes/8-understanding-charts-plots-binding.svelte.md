@@ -1,3 +1,0 @@
-# Understanding Charts, Plots Bindings.
-- From the [dotrain specification](https://github.com/rainlanguage/specs/blob/main/ob-yaml.md#front-matter-charts) : _Any scenario can be charted as every concrete set of bindings can be treated as a data point. For a single concrete set, a single data point is produced, for a fuzzer or similar, a set of data points will be produced. Front matter supports both scalar metrics and plots for charts with x/y axes._
-- Metrics are just a list of single scalar values each rendered with additional text, with only `label` and `value` required as the necessary key. 

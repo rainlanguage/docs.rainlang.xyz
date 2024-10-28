@@ -1,5 +1,5 @@
 # Front Matter Scenarios
-[Scenarios](https://github.com/rainlanguage/specs/blob/main/ob-yaml.md#front-matter-scenarios) in dotrain files provide a hierarchical configuration structure that generates specific rainlang instances through binding composition. This system allows developers to define multiple execution contexts for the same rainlang, enabling production deployment, testing, and simulation from a single configuration.
+[Scenarios](https://github.com/rainlanguage/specs/blob/main/ob-yaml.md#front-matter-scenarios) in dotrain files provide a hierarchical configuration structure that generates specific rainlang instances through composition for that specific scenario. This system allows developers to define multiple execution contexts for the same rainlang, enabling production deployments, testing, and simulation runs from a single configuration.
 
 ## Scenario Structure
 
@@ -18,112 +18,66 @@ scenarios:
 
 1. **Root Scenario**
    - Defines base network context
-   - Specifies core infrastructure references
-   - Contains global bindings
+   - Specifies core infrastructure references like networks, subparser contract address etc.
+   - Contains global bindings that are common throughout all the child scenarios.
 
 2. **Child Scenarios**
-   - Inherit parent configurations
-   - Override or extend parent bindings
-   - Can contain further nested scenarios
+   - Inherit parent configurations.
+   - Extend the existing parent bindings. Currently shadowing is disallowed, if a child specifies a binding that is already set by the parent, this is an error.
+   - Can contain further nested scenarios.
 
 3. **Leaf Scenarios**
-   - Final execution contexts
-   - Specific use cases (prod, test, simulation)
-   - Complete binding resolution
+   - Scenarios for specific use cases (prod, test, simulation)
+   - Leaf scenarios represent the final scenarios that result in the complete composition, where all the bindings for that particular leaf scenario are resolved in a rainlang document.
 
-## Binding System
-
-### Types of Bindings
-
-1. **Infrastructure Bindings**
-   ```yaml
-   network: base
-   deployer: base
-   orderbook: base
-   ```
-   - Define operational context
-   - Must reference valid configurations
-   - Inherited by child scenarios
-
-2. **Contract Bindings**
-   ```yaml
-   bindings:
-     orderbook-subparser: "0x662dFd6d..."
-   ```
-   - Reference on-chain contracts
-   - Used for external interactions
-   - Usually global to scenario tree
-
-3. **Parameter Bindings**
-   ```yaml
-   bindings:
-     limit-ratio: 0.0004
-     output-amount: 100
-   ```
-   - Define strategy parameters
-   - Can be overridden in child scenarios
-   - Type-safe according to rainlang spec
-
-## Execution Contexts
-
-### Production Context
-```yaml
-prod:
-  bindings:
-    get-output-amount: '''get-output-amount-prod'
+## Scenario Hierarchy Example
+- A single dotrain can have multiple heirarchies consisiting of multiple child and leaf scenarios.
+- Consider the following nested scenarios within the `limit-order` example consisting of root, child and leaf scenrios and their assoicated bindings.
 ```
-- Live deployment configuration
-- Real network interactions
-- Production-ready parameters
-
-### Simulation Context
-```yaml
-plot:
-  runs: 100
-  bindings:
-    get-output-amount: '''get-output-amount-plot'
+scenarios:
+    limit-order:
+      network: base
+      deployer: base
+      orderbook: base
+      bindings:
+        orderbook-subparser: 0x662dFd6d5B6DF94E07A60954901D3001c24F856a
+        
+      scenarios:
+        buy:
+          bindings:
+            # io-ratio and amount for the limit order.
+            limit-ratio: 0.0004
+            output-amount: 100
+            
+          scenarios:
+            prod:
+              bindings:
+                get-output-amount: '''get-output-amount-prod'
+            plot:
+              runs: 100
+              bindings:
+                get-output-amount: '''get-output-amount-plot'
+            backtest:
+              runs: 1
+              blocks:
+                range: [21530860..21531860]
+                interval: 100
+              bindings:
+                get-output-amount: '''get-output-amount-prod'
 ```
-- Strategy visualization
-- Multiple simulation runs
-- Performance analysis
+### Root Scenario
+- `limit-order` is the root scenario, specifying the network along with deployer and the orderbook that will be used for parsing and evaluating the rainlang expression.
+- Only `network` is the required feild, if not specified `orderbook` and `deployer` are resolved by referencing the same network key.
+- Contains bindings which will be inherited by all the nested scenarios.
 
-### Backtest Context
-```yaml
-backtest:
-  runs: 1
-  blocks:
-    range: [21530860..21531860]
-    interval: 100
-  bindings:
-    get-output-amount: '''get-output-amount-prod'
-```
-- Historical performance testing
-- Block range specification
-- Interval-based analysis
+### Child Scenario
+- Inherits all the bindings from the parent scenario.
+- `buy` is the child scenario, specifying the bindings that will be inherited by all the leaf scenarios.
 
+### Leaf Scenarios
+- Inherits all the bindings from the child scenarios, specify use-case specific bindings resulting in different instances of the rainlang composition tied to specific use case.
+- `prod` : Specifies bindings for the production composition.
+- `plot` : Specifies bindings to generate plots for the strategy.
+- `backtest` : Specifyies bindings to check evaluation on historical blocks.
 
-## Testing & Development
-
-### Local Testing
-```yaml
-test:
-  runs: 10
-  bindings:
-    network: localhost
-    deployer: test
-```
-- Use local network
-- Quick iteration
-- Rapid feedback
-
-### Simulation Setup
-```yaml
-simulate:
-  runs: 1000
-  interval: 10
-  bindings:
-    price-feed: mock
-```
-- Multiple scenarios
-- Parameter sweeps
-- Performance analysis
+Refer [front matter scenarios](https://github.com/rainlanguage/specs/blob/main/ob-yaml.md#front-matter-scenarios) from the offical specification for detailed explanation.

@@ -1,14 +1,14 @@
 # Understanding dotrain files
 
-A dotrain (.rain) file is a configuration file that combines YAML front matter with rainlang fragments to define trading strategies and order parameters. 
+A dotrain (.rain) file is a configuration file that combines YAML front matter with rainlang fragments, which is then composed by the tooling and the resultant document is the trading strategy. Parameters for the order can be set within the bindings. 
 
 ### File Structure
 A dotrain file consists of two main sections:
 
-* YAML Front Matter: Configuration metadata and settings
-* Rainlang Fragment: Strategy implementation code
+* YAML Front Matter: Configuring bindings and settings
+* Rainlang Fragment: Expression representing the trading strategy written in rainlang.
 
-These sections are separated by a triple-dash delimiter (---).
+These sections are separated by a triple-dash delimiter (`---`).
 
 ###  Components
 
@@ -22,13 +22,15 @@ The following components are typically managed through the raindex app settings 
 
 The following components are typically managed through a dotrain file:
 
+* tokens: Specifying the ERC20 token addresses that are relevant to the order.
 * orders: Defines the order configurations including inputs and outputs
-* scenarios: Specifies different execution scenarios (prod, plot, backtest)
+* scenarios: Specifies different execution scenarios (testing, plottting, production).
 * charts: Visualizes order metrics and simulations
+* deployment: Specifies deployment order and the corresponding scenrios.
 
 ###  Example dotrain
 
-The code below is a limit order that buys `WETH` in exchange for USDC on the base network. 
+The code below is a limit order that buys `WETH` in exchange for `USDC` on the base network. 
 
 ```
 raindex-version : db14c87f012a76980661802ff424371d6e84552e

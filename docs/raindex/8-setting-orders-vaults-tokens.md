@@ -1,7 +1,7 @@
 # Setting orders, vaults and tokens
 
 ## Token Configuration
-Tokens represent ERC20 contracts that your strategy will interact with. Each token configuration maps a friendly name to specific contract details.
+Tokens represent ERC20 contracts that your strategy will interact with. Each token configuration maps a name-identifier to specific contract details.
 
 ### Configuration Structure
 ```yaml
@@ -11,21 +11,24 @@ tokens:
     address: <contract-address>
 ```
 
-### Key Components
-- `token-identifier`: Unique identifier for referencing the token
+### Required feilds
 - `network`: Reference to a configured network
 - `address`: ERC20 contract address
 
+### Optional feilds
+- `decimals` (fetched from contract)
+- `label` (fetched from contract, called name in the erc20 interface)
+- `symbol` (fetched from contract)
+
 ### Best Practices
 1. **Naming Conventions**
-   - Use descriptive identifiers (e.g., `base-weth`, `arbitrum-usdc`)
-   - Include network prefix for clarity
+   - Use descriptive identifiers, include network prefix for clarity (e.g., `base-weth`, `arbitrum-usdc`)
    - Maintain consistent naming patterns
 
 2. **Address Validation**
-   - Verify contract addresses on block explorers
-   - Ensure addresses are checksummed
-   - Document token decimals and symbols
+   - Verify contract addresses on block explorers along with the token names, symbol and decimals.
+   - Ensure addresses are checksummed to avoid checksum fails.
+   - Add the optional symbol and decimals to the document.
 
 ## Implementation Examples
 
@@ -55,7 +58,7 @@ orders:
 ### Overview
 Vaults are user-specific token containers that manage balances within Raindex strategies. Specifying vaults allows us to build strategies that rotate tokens between different vaults. 
 
-A Vault ID can be any numerical value ranging from `0` to `115792089237316195423570985008687907853269984665640564039457584007913129639935`.
+A Vault ID can be any numerical hex value ranging from `0` to `115792089237316195423570985008687907853269984665640564039457584007913129639935`.
 
 Raindex automatically creates vaults if they are not specified. Users can specify vaults in a dotrain file. 
 
@@ -79,19 +82,17 @@ orders:
 
 ### Key Components
 1. **Order Identifier**
-   - Unique name for the order
-   - Used for referencing in strategies
+   - Unique name for the order, the identifier should describe what the order is about so that its known during deployment . Eg : `base-weth-buy`, `bsc-bnb-sell`.
+   - Order keys are used as reference in the deployment section. 
 
 2. **Orderbook Reference**
-   - Links to configured orderbook
-   - Determines execution environment
+   - Every order is tied with a specific orderbook, the specified orderbook identifier acts as a foriegn key in the `orderbooks` section. 
+   - The assoicated orderbook, the network and the deployer associted with it determines how the rainlang will be parsed and deployed on chain.
 
 3. **Input Configuration**
-   - Specifies received tokens
-   - Defines input vault IDs
-   - Multiple inputs supported
+   - Specifies the input vaults which represents the tokens received by the order, where every vault is uniquely identified per user, per chain, per vault id.
+   - Multiple input vaults can be associated with a particular order.
 
 4. **Output Configuration**
-   - Specifies offered tokens
-   - Defines output vault IDs
-   - Multiple outputs supported
+   - Specifies the output vaults which represents the tokens offered by the order, where every vault is uniquely identified per user, per chain, per vault id.
+   - Multiple output vaults can be associated with an order.

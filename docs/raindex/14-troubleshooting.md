@@ -18,8 +18,8 @@
 
 ## Resolution Steps
 1. Verify network connectivity and RPC endpoints
-2. Check subgraph synchronization status
-3. Validate contract deployments
+2. Check subgraph synchronization status by pinging the graphql endpoint.
+3. Validate contract deployments, check the contracts within the block explorer.
 4. Review network references
 5. Test metaboard indexing
 

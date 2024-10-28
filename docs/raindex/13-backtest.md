@@ -1,7 +1,7 @@
 # Backtesting
 
 ## Overview
-Backtesting allows developers to evaluate RainLang expressions against historical blockchain data. This feature is particularly valuable for:
+Backtesting allows developers to evaluate Rainlang expressions against historical blockchain data. This feature is particularly valuable for:
 - Validating trading strategies against historical price data
 - Testing expression behavior across different market conditions
 - Analyzing strategy performance over specific time periods
@@ -19,7 +19,7 @@ Backtesting allows developers to evaluate RainLang expressions against historica
 ## Implementation Details
 
 ### Block Range Configuration
-Backtesting is configured using three key parameters:
+Backtesting is configured using following parameters:
 
 1. **Block Range**: Specified as `startBlock..endBlock`
    ```yaml
@@ -33,6 +33,9 @@ Backtesting is configured using three key parameters:
    ```
 
 3. **Runs**: Number of times to evaluate the expression for each block
+
+- Refer [front matter scenarios](
+https://github.com/rainlanguage/specs/blob/main/ob-yaml.md#front-matter-scenarios) for the official specification.
 
 ### Example: Backtesting a Limit Order
 
@@ -98,8 +101,8 @@ C. Limit order backtest:
 
 2. **Historical Data Availability**
    - Dependent on blockchain data availability
-   - Some older blocks might not be accessible
+   - Some older blocks might not be accessible depending upon the provided node rpc url
 
 3. **Performance**
-   - Large block ranges with small intervals may impact performance
+   - Large block ranges with small intervals may impact performance will executing backtest
    - Consider optimizing range and interval settings

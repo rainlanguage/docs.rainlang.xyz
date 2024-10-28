@@ -2,38 +2,34 @@
 
 ## How Bindings Work
 1. **Parsing Phase**
-   - YAML front matter is parsed according to the specified version
-   - Bindings are validated against schema definitions
-   - Configuration values are transformed into rainlang components
+   - YAML front matter is parsed by the tooling available with the specified version of the raindex app.
+   - Bindings are validated against schema definitions (refer official spec linked below).
 
 2. **Composition Phase**
-   - Bindings are resolved in dependency order
-   - Values are injected into rainlang fragments
-   - Final document is assembled for deployment
+   - Bindings are resolved in dependency order.
+   - Values are injected into rainlang fragments.
+   - Final document is assembled for deployment.
   
 ## Requirements
 * Follow [YAML 1.2 Specification](https://yaml.org/spec/)
 * Adhere to [dotrain YAML Schema](https://github.com/rainlanguage/specs/blob/main/ob-yaml.md)
-* Maintain proper indentation and structure
-* Use consistent data types
+* Maintain proper indentation and structure that can be merged to support multiple files. 
 
 ## Best Practices
 
-* Comment complex bindings
-* Explain non-obvious constraints
-* Document dependencies between bindings
-* Include examples for reference
-* Validate bindings before deployment
-* Test with different version combinations
-* Verify binding resolution
-* Check for circular dependencies
+* Comment complex bindings and remove all the unnecessary bindings.
+* Prefer structures that could be merged to support cascading/overriding of multiple files.
+* Avoid needless depth in heirarchies, prefer flat, except where it would imply excessive repetition.
+* Include binding examples wherever necessary.
+* Validate all the bindings before deployment, resolved bindings can be be previewed in the `Rainlang` tab of the raindex editor.
 
 ## Common Pitfalls
+The compostion tooling we have within raindex editor prompts in case of any inconsistencies and errors within the document. However following points should be checked, before submitting the document on-chain.
 
-* Mixing incompatible versions
-* Undocumented version dependencies
+* Ensure the document is compatible with the proposed raindex app and settings(deployer,orderbook contracts etc).
+* Ensure all the bindings values, the app checks for type inconsitencies but the values need to be ensured. Eg : Buy price binding is incorrectly set to `100` instead of `50`.
 * Missing version specifications
-* Unresolved references
-* Type mismatches
+* Unresolved bindings within the document.
+* Type mismatches 
 * Invalid value formats
-* Circular dependencies
+* Indentation errors due to increased verbosity in case of large documents.

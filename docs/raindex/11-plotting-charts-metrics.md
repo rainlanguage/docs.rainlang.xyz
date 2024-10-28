@@ -14,6 +14,7 @@ Metrics represent single scalar values displayed with contextual information. Ea
 - `unit-suffix`: Unit of measurement to append
 - `description`: Detailed explanation of the metric
 
+(Refer [front matter charts](https://github.com/rainlanguage/specs/blob/main/ob-yaml.md#front-matter-charts))
 ### Example: Limit Order Metrics
 The following example displays the amount and ratio offered by an order as scalar values, referencing the `calculate-io` stack:
 
@@ -31,7 +32,7 @@ charts:
         unit-suffix: " WETH/USDC"            
         description: 'Order ratio at which WETH was purchased.'
 ```
-
+<img src="/img/raindex_metrics.png" /> 
 ## Plots
 Plots provide visualization of scenarios with x/y axes, supporting both single points and multiple data points through fuzzing.
 
@@ -58,11 +59,10 @@ B. Limit order simulation:
               x: 0.2
               y: 0.3 
 ```
+<img src="/img/raindex_plot.png" /> 
 
-## Important Notes
 - When using fuzzing, the `runs` parameter determines the number of fuzz iterations
-- Each fuzz run generates different input values and evaluates the expression
-- In the limit order example, the plot demonstrates that the IO ratio remains constant regardless of output amount changes
+- Each fuzz run generates different values for the fuzz input variable and evaluates the expression
 
 ## Reference
 For detailed specifications, see the [dotrain specification](https://github.com/rainlanguage/specs/blob/main/ob-yaml.md#front-matter-charts).

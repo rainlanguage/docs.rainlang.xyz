@@ -65,7 +65,7 @@ tokens:
     address: 0x4200000000000000000000000000000000000006
   base-usdc:
     network: base
-    address: 0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913
+    address: 0xA72e7279157b9840e5B4b911d142416F80fcDf07
 
 orders:
   base-weth-buy:

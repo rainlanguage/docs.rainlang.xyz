@@ -31,8 +31,11 @@ The following components are typically managed through a dotrain file:
 ###  Example dotrain
 
 The code below is a limit order that buys `WETH` in exchange for `USDC` on the base network. 
+- Note : The following rainlang startegy only serves as an example and is **NOT TO BE USED FOR TRADING REAL ASSETS**.
 
 ```
+# Buy Weth : NOT TO BE USED FOR TRADING REAL ASSETS
+
 raindex-version : db14c87f012a76980661802ff424371d6e84552e
 
 networks:

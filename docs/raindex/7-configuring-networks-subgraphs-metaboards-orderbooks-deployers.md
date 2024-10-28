@@ -1,4 +1,4 @@
-# Configuaring networks, subgraphs, metaboards, orderbooks and derployers
+# Configuaring networks, subgraphs, metaboards, orderbooks and deployers
 
 ## 1. Networks
 Networks define the blockchains where your strategies operate. Configuration follows the [chainlist.org](https://chainlist.org) specification.

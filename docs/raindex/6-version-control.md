@@ -1,12 +1,13 @@
 # Version control in dotrain
 
 
-- The dotrain tooling is a versioned dependency that comes with that specific version of the raindex app. It is imperative that every rain document is tied to a specific raindex app release and the tooling that comes with it. You can easily access the raindex version when you install and open the app. Navigate to the `New Order` section tab and the editor will prompt the raindex app version.
+- The dotrain tooling is a versioned dependency that comes with that specified version of the raindex app. Within the context of using raindex, it is imperative that every rain document is tied to a specific raindex app release, so that it can be parsed and composed by the tooling associated with that release.
+- Versioning documents prevents errors or misinterpretations that might arise from version mismatches which result in erreneous bytecodes being generated for the document.
+- Versioning enables tooling to be iteratively improved without disrupting existing `.rain` files, with older documents remaining functional with the specified versions they were designed for.
+- Versioning provides a reference point for audit trial of the compositions and any modifications to the document to be made in the future. 
+- You can easily access the raindex version when you install and open the app. Navigate to the `New Order` section tab and the editor will prompt the raindex app version.
 
 <img src="/img/raindex_version.png" />  
-
-- Alternatively you can navigate to the [release page](https://github.com/rainlanguage/rain.orderbook/releases), select the release you want to download and the raindex-version is the github sha commit hash assoicated with the release.
-- Eg : The raindex version associate with [this raindex app](https://github.com/rainlanguage/rain.orderbook/releases/tag/app-v0.0.0-db14c87f012a76980661802ff424371d6e84552e) is `db14c87f012a76980661802ff424371d6e84552e`.
 
 ### Raindex version specification
 ```yaml

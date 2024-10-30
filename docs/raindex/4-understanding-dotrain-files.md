@@ -1,6 +1,8 @@
 # Understanding dotrain files
 
-A dotrain (.rain) file is a configuration file that combines YAML front matter with rainlang fragments, which is then composed by the tooling and the resultant document is the trading strategy. Parameters for the order can be set within the bindings. 
+- A `.rain` file is a configuration format combining YAML front matter with Rainlang fragments to define trading strategies.
+- `.rain` files serve as a container for Rainlang to be shared and audited simply in a permissionless and adversarial environment such as a public blockchain.
+- Refer [official dotrain specification](https://github.com/rainlanguage/specs/blob/main/dotrain.md) for more details.
 
 ### File Structure
 A dotrain file consists of two main sections:
@@ -8,7 +10,7 @@ A dotrain file consists of two main sections:
 * YAML Front Matter: Configuring bindings and settings
 * Rainlang Fragment: Expression representing the trading strategy written in rainlang.
 
-These sections are separated by a triple-dash delimiter (`---`).
+These sections are separated by a triple-dash delimiter (`---`). The front matter and the rainlang fragement is then composed by the tooling and the resultant composition is deployed on chain.
 
 ###  Components
 
@@ -28,7 +30,7 @@ The following components are typically managed through a dotrain file:
 * charts: Visualizes order metrics and simulations
 * deployment: Specifies deployment order and the corresponding scenrios.
 
-###  Example dotrain
+###  Creating a dotrain( `.rain` ) file
 
 The code below is a limit order that buys `WETH` in exchange for `USDC` on the base network. 
 - Note : The following rainlang startegy only serves as an example and is **NOT TO BE USED FOR TRADING REAL ASSETS**.
@@ -190,3 +192,14 @@ deployments:
 #handle-add-order
  :;
 ```
+- Lets create a `.rain` file for the above strategy. Once you download the raindex app, open it and navigate to the `New Order` tab from the side bar and paste the above contents in the raindex editor.
+
+<img src="/img/raindex_editor.png" />
+
+- Click the `Save As` button on the top right hand side of the editor, choose an appropriate location and save the file as `limit-order.rain`. The file will be saved on your local machine
+
+  <img src="/img/raindex_save_file.png" />
+
+- You can now reload the file from your local machine, on the top right hand side click the `Load` button and chose the file you want to load into the editor. The corresponding file will be loaded into the editor.
+
+  <img src="/img/raindex_load_file.png" />

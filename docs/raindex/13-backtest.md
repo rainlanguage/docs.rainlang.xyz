@@ -56,11 +56,7 @@ C. Limit order backtest:
                 x: 0.1
                 y: 0.0  
 ```
-
-### Visualization Components
-- **X-Axis**: Represents block numbers
-- **Y-Axis**: Shows the current price (WETH/USDC ratio)
-- **Line Plot**: Displays price evolution across the selected block range
+<img src="/img/backtest.png" />  
 
 ## Best Practices
 

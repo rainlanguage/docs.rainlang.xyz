@@ -7,7 +7,7 @@
 - Versioning provides a reference point for audit trial of the compositions and any modifications to the document to be made in the future. 
 - You can easily access the raindex version when you install and open the app. Navigate to the `New Order` section tab and the editor will prompt the raindex app version.
 
-<img src="/img/raindex_version.png" />  
+<img src="/img/raindex/raindex_version.png" />  
 
 ### Raindex version specification
 ```yaml

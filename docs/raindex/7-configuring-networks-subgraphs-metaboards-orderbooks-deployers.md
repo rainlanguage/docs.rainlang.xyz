@@ -2,7 +2,7 @@
 - The YAML front matter in a `.rain` file is a structured configuration section placed at the beginning of the file. It defines all the necessary settings, parameters, and metadata that the Rainlang code fragments will utilize. This front matter is crucial for composing, deploying, and auditing the trading stratgies written in rainlang.  
 - [Orderbook YAML specification](https://github.com/rainlanguage/specs/blob/c09eec2045470ece7be21a8a54452d18d0cf2b63/ob-yaml.md) provides guidelines and configuration options for setting up and managing the YAML metadata.
 
-## 1. Networks
+## Networks
 Networks define the blockchains where your strategies operate. Each dotrain can specify one or more networks. Every deployment requires a network to deploy the strategy. Network configuration follows the [chainlist.org](https://chainlist.org) specification.
 
 ### Configuration Structure
@@ -23,7 +23,7 @@ networks:
 - `network-id`: Network identifier (usually matches chain-id)
 - `currency`: Native currency symbol
 
-## 2. Subgraphs
+## Subgraphs
 A subgraph is a tool that organizes and indexes blockchain data to make it easier to search, analyze, and display within applications. It acts like a filter, pulling only relevant information from the blockchain (such as transactions related to a specific orderbook) and presenting it in a structured way. This makes accessing specific blockchain data faster and more manageable.
 
 ### Configuration Structure
@@ -35,11 +35,11 @@ subgraphs:
 * This means each orderbook has its own subgraph. 
 * The GraphQL endpoint is used for fetching data indexed by the graphql server and also provides a query interface for orderbook data.
 
-## 3. Metaboards
+## Metaboards
 - A Metaboard is a smart contract deployed on a blockchain network that allows users to post metadata (referred to as "Rain meta") about a specific subject, typically an address on the blockchain, and metaboards are subgraphs that index the rain meta. 
 - Generally all the supported networks have the metaboard contracts and the corresponding subgraphs deployed. Metaboard indexes the rain meta associated with the subject, the associated meta is available as aid with writing rainlang in the `Words` tab of the raindex editor.
 
-<img src="/img/raindex_words.png" />  
+<img src="/img/raindex/raindex_words.png" />  
  
 
 ### Configuration Structure
@@ -48,7 +48,7 @@ metaboards:
   <network-key>: <metaboard-subgraph-endpoint>
 ```
 
-## 4. Orderbooks
+## Orderbooks
 Orderbook is the smart contract deployed on the network where bytecode representing the trading strategy written in rainlang can be added as a part of the order along with the associated input and output token vaults.
 
 ### Configuration Structure
@@ -63,7 +63,7 @@ orderbooks:
 - `network`: References `networks` configuration via network key, default network is same as `orderbook-key`
 - `subgraph`: References `subgraphs` configuration via subgraph key, default is same as `orderbook-key`
 
-## 5. Deployers
+## Deployers
 Deployer contracts serve as entry points for DIS (Deployer Interpreter Store) pairs.
 
 ### Configuration Structure
@@ -77,8 +77,7 @@ deployers:
 - Network inheritance from key name if not specified
 
 ## Example
-- Referring to our `limit-order` example, we can simply put the `networks`, `subgraphs`, `metaboards`, `orderbooks` and `deployers` from the rain documents into the `Settings` which can be accessible throught the app. 
-- Navigate to the settings tab, and paste the following settings in the tab.
+Referring to our `limit-order` example, we can simply put the `networks`, `subgraphs`, `metaboards`, `orderbooks` and `deployers` from the rain documents into the `Settings` which can be accessible throught the app. Navigate to the settings tab, and paste the following settings in the tab.
 ```
 networks:
   base:
@@ -105,10 +104,9 @@ deployers:
     network: base
 ```
 
- <img src="/img/raindex_settings.png" />  
+ <img src="/img/raindex/raindex_settings.png" />  
 
-- Once pasted, the settings will be applied throught the app and can be accessed with the parameter keys. Since we already have the settings loaded, we can remove the above yaml section from our rain document.
-- Remove `networks`, `subgraphs`, `metaboards`, `orderbooks` and `deployers` from `limit-order.rain` file, it should look something like this : 
+Once pasted, the settings will be applied throught the app and can be accessed with the parameter keys. Since we already have the settings loaded, we can remove the above yaml section from our rain document. Remove `networks`, `subgraphs`, `metaboards`, `orderbooks` and `deployers` from `limit-order.rain` file, it should look something like this : 
 ```
 # Buy Weth : NOT TO BE USED FOR TRADING REAL ASSETS
 
@@ -242,8 +240,7 @@ deployments:
 #handle-add-order
  :;
 ```
-- Notice that the above document does not contain the yaml present in the settings tab, however the same settings are directly applied into the rain document within the editor. 
-- Also note that the `network`, `orderbook` and `deployer` mentioned in the document uses the same keys used under settings tab. 
+Notice that the above document does not contain the yaml present in the settings tab, however the same settings are directly applied into the rain document within the editor. Also note that the `network`, `orderbook` and `deployer` mentioned in the document uses the same keys used under settings tab. 
 Eg: 
 ```
 tokens:
@@ -258,18 +255,11 @@ tokens:
 ## Best Practices
 
 ### Configuration Management
-1. **Centralized Settings**
-   - Store common settings in application configuration, have the rain documents partitioned within folders for specific settings.
-   - Avoid duplicating settings across strategies, common settings can simply be added in the raindex app under the `Settings` section.
+**Centralized Settings :** Store common settings in application configuration, have the rain documents partitioned within folders for specific settings. Avoid duplicating settings across strategies, common settings can simply be added in the raindex app under the `Settings` section.
    
-2. **Network References**
-   - Use consistent network keys across configurations
-   - Document network-specific requirements
-   - Validate RPC endpoints before deployment
+**Network References :** Use consistent network keys across configurations, document network-specific requirements.Validate RPC endpoints for networks before deployment
 
-3. **Contract Addresses**
-   - Maintain address registry for each network, this can simply be the settings file thats associated with the raindex app.
-   - Document contract deployment information along with the necessary metadata (transaction hash, block number, network).
+**Contract Addresses :** Maintain address registry for each network, this can simply be the settings file thats associated with the raindex app. Document contract deployment information along with the necessary metadata (transaction hash, block number, network).
 
 ### Validation
 - Verify network configurations against chainlist.org, validating the rpc-endpoints, network and chain ids, native currency etc

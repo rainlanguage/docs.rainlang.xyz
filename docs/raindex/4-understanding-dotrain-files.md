@@ -194,12 +194,12 @@ deployments:
 ```
 - Lets create a `.rain` file for the above strategy. Once you download the raindex app, open it and navigate to the `New Order` tab from the side bar and paste the above contents in the raindex editor.
 
-<img src="/img/raindex_editor.png" />
+<img src="/img/raindex/raindex_editor.png" />
 
 - Click the `Save As` button on the top right hand side of the editor, choose an appropriate location and save the file as `limit-order.rain`. The file will be saved on your local machine
 
-  <img src="/img/raindex_save_file.png" />
+  <img src="/img/raindex/raindex_save_file.png" />
 
 - You can now reload the file from your local machine, on the top right hand side click the `Load` button and chose the file you want to load into the editor. The corresponding file will be loaded into the editor.
 
-  <img src="/img/raindex_load_file.png" />
+  <img src="/img/raindex/raindex_load_file.png" />

@@ -1,13 +1,12 @@
 # Reading stack elements
 
 ## Overview
-- Rainlang is a stack-based interpreted language, understanding stack element positions is crucial for debugging, charting, and backtesting. This guide explains how to read and reference stack elements within the Raindex application.
-- Composed rainlang document for a scenario must be known in order to know the positions of the elements on the stack. Fully composed rainlang is available in the rainlang tab of the raindex editor.
+Rainlang is a stack-based interpreted language, understanding stack element positions is crucial for debugging, charting, and backtesting. This guide explains how to read and reference stack elements within the Raindex application.Composed rainlang document for a scenario must be known in order to know the positions of the elements on the stack. Fully composed rainlang is available in the rainlang tab of the raindex editor.
 
-<img src="/img/rainlang_tab.png" />
+<img src="/img/raindex/raindex_rainlang_tab.png" />
 
 ## Stack Overview
-- Rainlang is a stack based language, where sources and statements are zero indexed and the elements can be accessed in source-statement hierarchy.
+Rainlang is a stack based language, where sources and statements are zero indexed and the elements can be accessed in source-statement hierarchy.
 Eg : Reffering to our example, following is the composition for the `limit-order.buy.prod` scenario: 
 ```
 /* 0. calculate-io */ 
@@ -30,8 +29,7 @@ using-words-from 0x662dFd6d5B6DF94E07A60954901D3001c24F856a 0xD6B34F97d4A8Cb38D0
 max-output: 100;
 ```
 ## Source Structure
-- The source indexing starts from `0` with increments of `1` made to subsequent sources, the sources are commented for reference in the `Rainlang` tab. Eg: Source `calculate-io` is indexed `0`, `handle-io` is indexed `1` and so on.
-- Source Indexed `0` and `1` are entrypoints for order execution within the OrderBook contract.
+The source indexing starts from `0` with increments of `1` made to subsequent sources, the sources are commented for reference in the `Rainlang` tab. Eg: Source `calculate-io` is indexed `0`, `handle-io` is indexed `1` and so on. Source Indexed `0` and `1` are entrypoints for order execution within the OrderBook contract.
 
 ### Source Types
 1. **Primary Source (`calculate-io`)**
@@ -119,6 +117,6 @@ statement1  // index: 2.0
 ### Raindex Debug Tab
 - Real-time stack inspection is available in the `Debug` section within the raindex editor for `calculate-io` source and calls made to the nested sources.
 
-<img src="/img/debug_tab.png" />
+<img src="/img/raindex/raindex_debug_tab.png" />
 
 

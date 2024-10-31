@@ -51,14 +51,14 @@ tokens:
   
 ```
 ### Best Practices
-1. **Naming Conventions**
-   - Use descriptive identifiers, include network prefix for clarity (e.g., `base-weth`, `arbitrum-usdc`)
-   - Maintain consistent naming patterns
+**Naming Conventions**
+  - Use descriptive identifiers, include network prefix for clarity (e.g., `base-weth`, `arbitrum-usdc`)
+  - Maintain consistent naming patterns
 
-2. **Address Validation**
-   - Verify contract addresses on block explorers along with the token names, symbol and decimals.
-   - Ensure addresses are checksummed to avoid checksum fails.
-   - Add the optional symbol and decimals to the document.
+**Address Validation**
+  - Verify contract addresses on block explorers along with the token names, symbol and decimals.
+  - Ensure addresses are checksummed to avoid checksum fails.
+  - Add the optional symbol and decimals to the document.
 
 
 ## Vault System
@@ -96,7 +96,7 @@ orders:
 - `deployer` - Optional deployer reference. If not specified defaults to the deployer referenced by the network for the specified orderbook
 
 ### Implementation Examples
-- Following our example for `limit-order`, we can see that the order has `WETH` token vault as input vault and `USDC` token vault as output token vault, which will be added under  orderbook resolved by `base` key in the `orderbooks` section of the `Settings` tab.
+Following our example for `limit-order`, we can see that the order has `WETH` token vault as input vault and `USDC` token vault as output token vault, which will be added under  orderbook resolved by `base` key in the `orderbooks` section of the `Settings` tab.
 ```
 orders:
   base-weth-buy:
@@ -108,7 +108,7 @@ orders:
       - token: base-usdc
         vault-id: 0x4767d92a5f01500424d2a2dd88964314f8a98a6b66bcf1db362b0ad9006c93e8
 ```
-- Also for the above order the vault-ids are explicitly mentioned, raindex automatically creates and assigns random vault-ids if they are not specified.
+Also for the above order the vault-ids are explicitly mentioned, raindex automatically creates and assigns random vault-ids if they are not specified.
 ```
 orders:
   base-weth-buy:
@@ -118,7 +118,7 @@ orders:
     outputs:
       - token: base-usdc
 ```
-- Multiple input and output vaults can also be associated with an order, example : 
+Multiple input and output vaults can also be associated with an order, example : 
 ```
 orders:
   base-weth-buy:
@@ -130,7 +130,7 @@ orders:
       - token: base-dai
       - token: base-frax
 ```
-- Multiple orders can also share vaults. Eg: The following two orders are for buying and selling weth. Both order share the same two vaults, one vault is `WETH` token vault with vault-id `342123121` and another is the `USDC` token vault with the id `342123121`. For the `base-weth-buy` USDC vault is the output vault and WETH in the input vault, where as for `base-weth-sell` USDC is input vault and WETH is the input vault.
+Multiple orders can also share vaults. Eg: The following two orders are for buying and selling weth. Both order share the same two vaults, one vault is `WETH` token vault with vault-id `342123121` and another is the `USDC` token vault with the id `342123121`. For the `base-weth-buy` USDC vault is the output vault and WETH in the input vault, where as for `base-weth-sell` USDC is input vault and WETH is the input vault.
 ```
 orders:
   base-weth-buy:
@@ -151,18 +151,10 @@ orders:
         vault-id: 342123121
 ```
 ### Key Components
-1. **Order Identifier**
-   - Unique name for the order, the identifier should describe what the order is about so that its known during deployment . Eg : `base-weth-buy`, `bsc-bnb-sell`.
-   - Order keys are used as reference in the deployment section. 
+**Order Identifier** : Order identifiers are unique names for the order, the identifier should describe what the order is about so that its known during deployment . Eg : `base-weth-buy`, `bsc-bnb-sell`. Order keys are used as reference in the deployment section. 
 
-2. **Orderbook Reference**
-   - Every order is tied with a specific orderbook, the specified orderbook identifier acts as a foriegn key in the `orderbooks` section. 
-   - The assoicated orderbook, the network and the deployer associted with it determines how the rainlang will be parsed and deployed on chain.
+**Orderbook Reference** : Every order is tied with a specific orderbook, the specified orderbook identifier acts as a foriegn key in the `orderbooks` section. The assoicated orderbook, the network and the deployer associted with it determines how the rainlang will be parsed and deployed on chain.
 
-3. **Input Configuration**
-   - Specifies the input vaults which represents the tokens received by the order, where every vault is uniquely identified per user, per chain, per vault id.
-   - Multiple input vaults can be associated with a particular order.
+**Input Configuration**: Specifies the input vaults which represents the tokens received by the order, where every vault is uniquely identified per user, per chain, per vault id. Multiple input vaults can be associated with a particular order.
 
-4. **Output Configuration**
-   - Specifies the output vaults which represents the tokens offered by the order, where every vault is uniquely identified per user, per chain, per vault id.
-   - Multiple output vaults can be associated with an order.
+**Output Configuration**: Specifies the output vaults which represents the tokens offered by the order, where every vault is uniquely identified per user, per chain, per vault id. Multiple output vaults can be associated with an order.

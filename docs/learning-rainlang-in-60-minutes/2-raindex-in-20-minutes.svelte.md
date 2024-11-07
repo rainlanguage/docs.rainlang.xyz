@@ -2,11 +2,11 @@
 
 Raindex allows anyone to write, deploy and manage perpetual token trading strategies, written in Rainlang, on any EVM network.
 
-Raindex is a totally new kind of DEX, where traders can move past "one size fits all" AMM curves and be given total freedom in how they express their trades. It’s also completely onchain, which means users don’t need to put their funds in someone else’s hands or put their hot wallet private keys in a bot connected to the internet. This means users have the flexibility and power usually associated with CEX trading or running bots, whilst retaining the attributes we’re all here for - it’s trustless, permissionless and decentralised. 
+Raindex is a totally new kind of DEX, where traders can move past "one size fits all" AMM curves and be given total freedom in how they express their trades. It’s also completely on-chain, which means users don’t need to put their funds in someone else’s hands or put their hot wallet private keys in a bot connected to the internet. This means users have the flexibility and power usually associated with CEX trading or running bots, whilst retaining the attributes we’re all here for - it’s trustless, permissionless and decentralised. 
 
 Raindex comes in two forms:
-1. Self-hosted on mac and linux for power users and strategy writers
-2. Web based to quickly deploy existing stratagies
+1. Self-hosted on Mac and Linux for power users and strategy writers
+2. Web based to quickly deploy existing strategies
 
 What can you do with the Raindex self-hosted app?
 - Write, save and load strategies via the .rain file format
@@ -18,7 +18,7 @@ What can you do with the Raindex self-hosted app?
 - Get real-time updates on your strategies’ progress
 
 How can you use Raindex to improve your strategy performance?
-- Run monte carlo modelling and produce charts for your strategy
+- Run Monte Carlo modelling and produce charts for your strategy
 - Run backtesting simulations to test strategy performance
 - View the stack to see how the strategy will initially execute
 - Configure strategy bindings for optimal deployment
@@ -33,8 +33,8 @@ What can you do with the Raindex web app?
 - Get real-time updates on your strategies’ progress
 
 There’s a few layers of the stack that have come together to make this happen:
-- Rainlang, a new smart contract language that is itself parsed and interpreted onchain by smart contracts
-- The Raindex smart contracts and protocol - this includes everything onchain as well as the fillers who actually execute orders.
+- Rainlang, a new smart contract language that is itself parsed and interpreted on-chain by smart contracts
+- The Raindex smart contracts and protocol - this includes everything on-chain as well as the fillers who actually execute orders.
 - Finally, the Raindex app - a fully self-hosted way to write Rainlang and interact with the protocol with no intermediaries
 
 ## Key takeaways

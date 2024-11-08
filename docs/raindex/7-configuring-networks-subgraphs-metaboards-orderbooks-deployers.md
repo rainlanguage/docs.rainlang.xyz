@@ -1,5 +1,5 @@
 # Configuring the order book yaml
-- The YAML front matter in a `.rain` file is a structured configuration section placed at the beginning of the file. It defines all the necessary settings, parameters, and metadata that the Rainlang code fragments will utilize. This front matter is crucial for composing, deploying, and auditing the trading stratgies written in rainlang.  
+- The YAML front matter in a `.rain` file is a structured configuration section placed at the beginning of the file. It defines all the necessary settings, parameters, and metadata that the Rainlang code fragments will utilize. This front matter is crucial for composing, deploying, and auditing the trading strategies written in rainlang.  
 - [Orderbook YAML specification](https://github.com/rainlanguage/specs/blob/c09eec2045470ece7be21a8a54452d18d0cf2b63/ob-yaml.md) provides guidelines and configuration options for setting up and managing the YAML metadata.
 
 ## Networks
@@ -33,7 +33,7 @@ subgraphs:
 ```
 * Currently the subgraphs map 1:1 directly to the orderbooks
 * This means each orderbook has its own subgraph. 
-* The GraphQL endpoint is used for fetching data indexed by the graphql server and also provides a query interface for orderbook data.
+* The GraphQL endpoint is used for fetching data indexed by the GraphQL server and also provides a query interface for orderbook data.
 
 ## Metaboards
 - A Metaboard is a smart contract deployed on a blockchain network that allows users to post metadata (referred to as "Rain meta") about a specific subject, typically an address on the blockchain, and metaboards are subgraphs that index the rain meta. 
@@ -77,7 +77,7 @@ deployers:
 - Network inheritance from key name if not specified
 
 ## Example
-Referring to our `limit-order` example, we can simply put the `networks`, `subgraphs`, `metaboards`, `orderbooks` and `deployers` from the rain documents into the `Settings` which can be accessible throught the app. Navigate to the settings tab, and paste the following settings in the tab.
+Referring to our `limit-order` example, we can simply put the `networks`, `subgraphs`, `metaboards`, `orderbooks` and `deployers` from the rain documents into the `Settings` which can be accessible through the app. Navigate to the settings tab, and paste the following settings in the tab.
 ```
 networks:
   base:
@@ -106,9 +106,9 @@ deployers:
 
  <img src="/img/raindex/raindex_settings.png" />  
 
-Once pasted, the settings will be applied throught the app and can be accessed with the parameter keys. Since we already have the settings loaded, we can remove the above yaml section from our rain document. Remove `networks`, `subgraphs`, `metaboards`, `orderbooks` and `deployers` from `limit-order.rain` file, it should look something like this : 
+Once pasted, the settings will be applied throughout the app and can be accessed with the parameter keys. Since we already have the settings loaded, we can remove the above YAML section from our rain document. Remove `networks`, `subgraphs`, `metaboards`, `orderbooks` and `deployers` from `limit-order.rain` file, it should look something like this : 
 ```
-# Buy Weth : NOT TO BE USED FOR TRADING REAL ASSETS
+# Buy WETH : NOT TO BE USED FOR TRADING REAL ASSETS
 
 raindex-version : db14c87f012a76980661802ff424371d6e84552e
 
@@ -165,7 +165,7 @@ charts:
   A. Limit order metrics :
     scenario: limit-order.buy.prod
     metrics:
-      - label: Maxmimum USDC offered
+      - label: Maximum USDC offered
         value: 0.2
         unit-suffix: " USDC"
         description: 'Maximum USDC offered by the order.'
@@ -225,7 +225,7 @@ deployments:
   using-words-from orderbook-subparser 0xD6B34F97d4A8Cb38D0544dB241CB3f335866f490
   
   current-price: uniswap-v3-quote-exact-input(
-    0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913 0x4200000000000000000000000000000000000006 
+    0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913 0x4200000000000000000000000000000006 
     1
     0x33128a8fC17869897dcE68Ed026d694621f6FDfD [uniswap-v3-init-code]
     [uniswap-v3-fee-medium]
@@ -240,8 +240,8 @@ deployments:
 #handle-add-order
  :;
 ```
-Notice that the above document does not contain the yaml present in the settings tab, however the same settings are directly applied into the rain document within the editor. Also note that the `network`, `orderbook` and `deployer` mentioned in the document uses the same keys used under settings tab. 
-Eg: 
+Notice that the above document does not contain the YAML present in the settings tab, however the same settings are directly applied into the rain document within the editor. Also note that the `network`, `orderbook` and `deployer` mentioned in the document uses the same keys used under settings tab. 
+E.g.: 
 ```
 tokens:
   base-weth:
@@ -252,18 +252,18 @@ tokens:
     address: 0xA72e7279157b9840e5B4b911d142416F80fcDf07
 ```
 - For the above `tokens` section, the `network: base` resolves to `base` network under the `networks` section in the `Settings` tab. 
+
 ## Best Practices
 
 ### Configuration Management
-**Centralized Settings :** Store common settings in application configuration, have the rain documents partitioned within folders for specific settings. Avoid duplicating settings across strategies, common settings can simply be added in the raindex app under the `Settings` section.
+**Centralized Settings:** Store common settings in application configuration, have the rain documents partitioned within folders for specific settings. Avoid duplicating settings across strategies, common settings can simply be added in the raindex app under the `Settings` section.
    
-**Network References :** Use consistent network keys across configurations, document network-specific requirements.Validate RPC endpoints for networks before deployment
+**Network References:** Use consistent network keys across configurations, document network-specific requirements. Validate RPC endpoints for networks before deployment.
 
-**Contract Addresses :** Maintain address registry for each network, this can simply be the settings file thats associated with the raindex app. Document contract deployment information along with the necessary metadata (transaction hash, block number, network).
+**Contract Addresses:** Maintain address registry for each network, this can simply be the settings file that's associated with the raindex app. Document contract deployment information along with the necessary metadata (transaction hash, block number, network).
 
 ### Validation
-- Verify network configurations against chainlist.org, validating the rpc-endpoints, network and chain ids, native currency etc
+- Verify network configurations against chainlist.org, validating the RPC endpoints, network and chain IDs, native currency etc.
 - Test subgraph endpoints for availability, the subgraph health can be checked by simply pinging the endpoint.
 - Confirm that the deployed contract addresses sit under the correct section within the document, `deployers` section should only have deployer contracts, `orderbooks` section should only have orderbook contracts.
 - Validate metaboard indexing by navigating to the `Words` tab in the editor.
-

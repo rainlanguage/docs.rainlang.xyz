@@ -1,7 +1,7 @@
 # Understanding dotrain files
 
 - A `.rain` file is a configuration format combining YAML front matter with Rainlang fragments to define trading strategies.
-- `.rain` files serve as a container for Rainlang to be shared and audited simply in a permissionless and adversarial environment such as a public blockchain.
+- `.rain` files serve as a container for Rainlang to be shared and audited simply in a permission-less and adversarial environment such as a public blockchain.
 - Refer [official dotrain specification](https://github.com/rainlanguage/specs/blob/main/dotrain.md) for more details.
 
 ### File Structure
@@ -10,7 +10,7 @@ A dotrain file consists of two main sections:
 * YAML Front Matter: Configuring bindings and settings
 * Rainlang Fragment: Expression representing the trading strategy written in rainlang.
 
-These sections are separated by a triple-dash delimiter (`---`). The front matter and the rainlang fragement is then composed by the tooling and the resultant composition is deployed on chain.
+These sections are separated by a triple-dash delimiter (`---`). The front matter and the rainlang fragment are then composed by the tooling and the resultant composition is deployed on chain.
 
 ###  Components
 
@@ -33,10 +33,10 @@ The following components are typically managed through a dotrain file:
 ###  Creating a dotrain( `.rain` ) file
 
 The code below is a limit order that buys `WETH` in exchange for `USDC` on the base network. 
-- Note : The following rainlang startegy only serves as an example and is **NOT TO BE USED FOR TRADING REAL ASSETS**.
+- Note : The following rainlang strategy only serves as an example and is **NOT TO BE USED FOR TRADING REAL ASSETS**.
 
 ```
-# Buy Weth : NOT TO BE USED FOR TRADING REAL ASSETS
+# Buy WETH : NOT TO BE USED FOR TRADING REAL ASSETS
 
 raindex-version : db14c87f012a76980661802ff424371d6e84552e
 
@@ -117,7 +117,7 @@ charts:
   A. Limit order metrics :
     scenario: limit-order.buy.prod
     metrics:
-      - label: Maxmimum USDC offered
+      - label: Maximum USDC offered
         value: 0.2
         unit-suffix: " USDC"
         description: 'Maximum USDC offered by the order.'
@@ -177,7 +177,7 @@ deployments:
   using-words-from orderbook-subparser 0xD6B34F97d4A8Cb38D0544dB241CB3f335866f490
   
   current-price: uniswap-v3-quote-exact-input(
-    0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913 0x4200000000000000000000000000000000000006 
+    0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913 0x4200000000000000000000000000000006 
     1
     0x33128a8fC17869897dcE68Ed026d694621f6FDfD [uniswap-v3-init-code]
     [uniswap-v3-fee-medium]

@@ -1,13 +1,13 @@
 # Reading stack elements
 
 ## Overview
-Rainlang is a stack-based interpreted language, understanding stack element positions is crucial for debugging, charting, and backtesting. This guide explains how to read and reference stack elements within the Raindex application.Composed rainlang document for a scenario must be known in order to know the positions of the elements on the stack. Fully composed rainlang is available in the rainlang tab of the raindex editor.
+Rainlang is a stack-based interpreted language. Understanding stack element positions is crucial for debugging, charting, and backtesting. This guide explains how to read and reference stack elements within the Raindex application. The composed rainlang document for a scenario must be known in order to know the positions of the elements on the stack. Fully composed rainlang is available in the rainlang tab of the Raindex editor.
 
 <img src="/img/raindex/raindex_rainlang_tab.png" />
 
 ## Stack Overview
-Rainlang is a stack based language, where sources and statements are zero indexed and the elements can be accessed in source-statement hierarchy.
-Eg : Reffering to our example, following is the composition for the `limit-order.buy.prod` scenario: 
+Rainlang is a stack-based language, where sources and statements are zero-indexed and the elements can be accessed in source-statement hierarchy.
+E.g.: Referring to our example, following is the composition for the `limit-order.buy.prod` scenario: 
 ```
 /* 0. calculate-io */ 
 using-words-from 0x662dFd6d5B6DF94E07A60954901D3001c24F856a 0xD6B34F97d4A8Cb38D0544dB241CB3f335866f490
@@ -29,12 +29,12 @@ using-words-from 0x662dFd6d5B6DF94E07A60954901D3001c24F856a 0xD6B34F97d4A8Cb38D0
 max-output: 100;
 ```
 ## Source Structure
-The source indexing starts from `0` with increments of `1` made to subsequent sources, the sources are commented for reference in the `Rainlang` tab. Eg: Source `calculate-io` is indexed `0`, `handle-io` is indexed `1` and so on. Source Indexed `0` and `1` are entrypoints for order execution within the OrderBook contract.
+The source indexing starts from `0` with increments of `1` made to subsequent sources; the sources are commented for reference in the `Rainlang` tab. E.g.: Source `calculate-io` is indexed `0`, `handle-io` is indexed `1` and so on. Sources indexed `0` and `1` are entrypoints for order execution within the OrderBook contract.
 
 ### Source Types
 1. **Primary Source (`calculate-io`)**
    - Index: 0
-   - Purpose: Main orderevaluation logic
+   - Purpose: Main order evaluation logic
    - Used for calculating order amount and ratio
 
 2. **IO Handler Source (`handle-io`)**
@@ -49,7 +49,7 @@ The source indexing starts from `0` with increments of `1` made to subsequent so
 ## Element Reference System
 
 ### Reference Pattern
-- Elements can be referenced by the following pattern. 
+- Elements can be referenced by the following pattern: 
 ```
 <source-index>.<statement-index>[.<nested-index>]
 
@@ -58,7 +58,7 @@ where `source-index` is the index of the source, `statement-index` is the index 
 and the optional `nested-index` is the statement index within the call to the nested source.
 
 ### Components
-- Example the `current-price` element can be accessed as `0.0` within in app, similarly `final-amount` and `final-ratio` can be accessed as `0.2` and `0.3` respectively. The `max-output` element is not available within the `calculate-io` source, but we see a `call` made to source indexed `2` and `max-output` is the statement indexed 0 within that source, so the `max-output` element can be accessed as `0.2.0`.
+- For example, the `current-price` element can be accessed as `0.0` within the app; similarly, `final-amount` and `final-ratio` can be accessed as `0.2` and `0.3` respectively. The `max-output` element is not available within the `calculate-io` source, but we see a `call` made to source indexed `2` and `max-output` is the statement indexed 0 within that source, so the `max-output` element can be accessed as `0.2.0`.
 1. **Source Index**
    - Zero-based
    - Identifies source block
@@ -109,14 +109,12 @@ statement1  // index: 2.0
 ```
 
 ### Evaluation Order
-- Within the OrderBook smart contract primary `calculate-io` source is evaluated first, with nested calls made to utility sources if any, followed by the evaluation of the `handle-io` source.
-- Note that the current version of the raindex app does not evaluate the handle-io source, debug trace for which isn't available unlike the `calculate-io` source which has the complete debug stack trace.
+- Within the OrderBook smart contract, primary `calculate-io` source is evaluated first, with nested calls made to utility sources if any, followed by the evaluation of the `handle-io` source.
+- Note that the current version of the Raindex app does not evaluate the handle-io source, debug trace for which isn't available unlike the `calculate-io` source which has the complete debug stack trace.
 
 ## Debugging Tools
 
 ### Raindex Debug Tab
-- Real-time stack inspection is available in the `Debug` section within the raindex editor for `calculate-io` source and calls made to the nested sources.
+- Real-time stack inspection is available in the `Debug` section within the Raindex editor for `calculate-io` source and calls made to the nested sources.
 
 <img src="/img/raindex/raindex_debug_tab.png" />
-
-

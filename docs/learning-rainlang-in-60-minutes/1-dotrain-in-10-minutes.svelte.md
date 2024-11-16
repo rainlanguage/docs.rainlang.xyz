@@ -1,415 +1,387 @@
-# Learn DotRain in 10 minutes
+# Learn dotrain in 10 minutes
 
-## What are `.rain` Files?
+## What is dotrain?
 
-`.rain` files are a specialized format for describing **Rainlang fragments**, enabling sharing and auditing in public, decentralized environments such as blockchains. `.rain` files serve as a wrapper/container/medium for Rainlang to be shared and audited simply in a permissionless and adversarial environment such as a public blockchain.
+dotrain (`.rain`) is a format for creating and sharing smart contract logic in decentralized environments. It serves as a container for Rainlang fragments, making code easily shareable and auditable in permissionless, adversarial environments like public blockchains.
 
-Think of `.rain` files as a building block for creating trustable, reusable code that operates in adversarial environments like public blockchains.
+Think of dotrain files as building blocks for creating trustworthy, reusable smart contract logic that anyone can verify and understand.
 
+## Key Features
+
+### 1. Composability and Auditability
+
+dotrain files support an "overlay-style" audit system where code composition and metadata can be shared at a social layer. This creates an audit trail of audit trails, allowing participants to build and verify trust incrementally.
+
+### 2. Version Control Ready 
+
+dotrain natively supports iterative development practices by tracking the exact state of code over time. It works seamlessly with standard development tools like git while adding blockchain-specific benefits:
+
+- Clear tracking of code changes 
+- Unambiguous references to specific states
+- Compatibility with standard development workflows
+
+### 3. Bidirectional Compatibility
+
+A key feature of dotrain is its 1:1 relationship with on-chain bytecode. This means:
+
+```rain
+# In a .rain file
+amount price: 100 2;
+```
+
+Can be deployed on-chain and later recovered to an equivalent .rain file without losing meaning. This bidirectional compatibility ensures transparency and auditability.
+
+### 4. Structured Imports
+
+dotrain files can reference other code and metadata using cryptographic hashes:
+
+```rain
+# Import words from a specific interpreter
+@ 0x123...
+
+# Import a shared utility
+@utils 0x456...
+```
+
+This hash-based import system ensures code integrity while enabling composition and reuse.
+
+## Design Philosophy
+
+dotrain prioritizes:
+
+1. **Simplicity**: The format is minimal yet expressive
+2. **Portability**: Code can be shared and verified easily
+3. **Security**: Built for adversarial blockchain environments
+4. **Tooling Support**: Easy to build automated tools and analysis
+
+# dotrain Syntax and Structure
+
+## Character Set
+
+dotrain files use a simple character set:
+- Only ASCII printable characters and whitespace are allowed (`[\s!-~]` in regex)
+- UTF-8 encoding is supported (as it's backwards compatible with ASCII)
+
+### Special Characters
+
+dotrain uses several special characters with specific meanings:
+- `#` - Defines a named fragment
+- `!` - Marks an elided (placeholder) fragment
+- `.` - Separates namespace paths
+- `'` - Quotes names for explicit references
+- `@` - Imports other dotrain files or metadata
+- `---` - Separates multiple documents within a file
+
+## Document Structure 
+
+### Multiple Documents
+dotrain files can contain multiple documents separated by `---`. This allows you to:
+- Define multiple independent code sections
+- Import several namespaces in one file
+- Reuse names across different documents
+
+Example of multiple documents:
+```rain
+#price 100
 ---
+#amount 50
+```
 
-## Design Goals
-
-### Primary Goals
-
-1. **Portability and Auditability**:
- `.rain` files ensure code can be shared and verified easily. Dotrain files support "overlay-style" code audits where the entire composition of the metadata is shared.
-
-2. **Iterative Development**:
-  Composition natively support iterative development allowing for versioned changes to the rain document so that the *state* of the document can be tracked accross the development cycle. Composition is also amenable to standard development environment such as git.
-
-3. **Structure and Composition**:
-  Much as the bytecode syntax of Rainlang is 1:1 with bytecode, a .rain file is 1:1 with a cbor-seq of metadata as described by the metadata spec. That is to say, given a compatible cbor-seq of metadata it is possible to recover an equivalent .rain file to the one that produced the metadata, give or take some incidental concerns such as insignificant whitespace.
-  - Example, the following bytecode : 
-  ```
-  0xff0a89c674ee7874a3005902092f2a20302e2063616c63756c6174652d696f202a2f200a7573696e672d776f7264732d66726f6d20307836363264466436643542364446393445303741363039353439303144333030316332344638353661203078443642333446393764344138436233384430353434644232343143423366333335383636663439300a20200a202063757272656e742d70726963653a20756e69737761702d76332d71756f74652d65786163742d696e707574280a2020202030783833333538396643443665446236453038663463374333324434663731623534626441303239313320307834323030303030303030303030303030303030303030303030303030303030303030303030303036200a20202020310a20202020307833333132386138664331373836393839376463453638456430323664363934363231663646446644205b756e69737761702d76332d696e69742d636f64655d0a202020205b756e69737761702d76332d6665652d6d656469756d5d0a2020292c0a20205f3a20626c6f636b2d6e756d62657228292c0a202066696e616c2d616d6f756e743a2063616c6c3c323e28292c0a202066696e616c2d726174696f3a20302e303030343b0a0a2f2a20312e2068616e646c652d696f202a2f200a3a3b0a0a2f2a20322e206765742d6f75747075742d616d6f756e742d70726f64202a2f200a6d61782d6f75747075743a203130303b011bff13109e41336ff20278186170706c69636174696f6e2f6f637465742d73747265616d
-  ``` 
-  corresponds to the following rainlang document : 
-  ```
-  /* 0. calculate-io */ 
-  final-amount final-ratio: 100 1;
-
-  /* 1. handle-io */ 
-   :;
-  ```
-  and vice-versa.
-
-### Secondary Goals
-
-- Adopt **common conventions** for usability.
-- Avoid unnecessary complexity to ensure extensibility.
-
+This separation lets you reuse names that would otherwise conflict:
+```rain
+#token-a "USDC"
 ---
-
-## Allowed Characters
-ONLY ascii printable and whitespace characters are allowed in .rain files.
-As a regex this is `[\s!-~]`.
-utf8 is backwards compatible with ascii so the codepoints are the same in either encoding.
-
-### Additional Characters
-- `#` binds a name to a fragment
-- `!` is an elided fragment
-- `.` delimits paths in a namespace
-- `'` quotes names
-- `@` imports .rain/metadata
-- `---` separates .rain documents within a single file
-
-## Structure of `.rain` files
-`.rain` documents can be delimited by `---`. The --- can also be used to start/end a .rain file if it is embedded directly in some other file like a yaml file.
-- This allows defining and importing several namespaces within a single physical file.
-```     
-#a 1
----
-#b 2
-```
-- As --- defines entirely different .rain documents, it allows names to be reused in a single file, where they would otherwise have been disallowed due to collision/shadowing rules.
-```
-#a 1
----
-#a 2
+#token-a "DAI"  # Valid because it's in a different document
 ```
 
-## Named Fragements
-The top level of the .rain file is only named fragments, named fragments take the form of `#<name><whitespace><fragment>.`, fragments are useful.
-Example : 
-```
-#length 3
-#width 4
-```
-Fragements can also be nested : 
-```
-#slow-three add(1 3)
-#multiline-example
-a _: slow-three 3
-_: mul(a 5)
-```
-Fragements can also be bound to another fragment : 
-```
-#a 1
-#b a
-```
-Names can point to elided fragments which are then later bound by the tooling. Fragment elision syntax is `!<message>`.The message is the error message to show if the fragment remains elided at the time it needs to be bound.
-```
-#a !must bind a to calculate rate of change
-#b mul(sub(1000000 now()) a)
-```
-- For a deatiled explaination refer [fragments](https://github.com/rainlanguage/specs/blob/main/dotrain.md#named-fragments) from the offcial documentation.
+### Named Fragments
 
----
+The basic building blocks of dotrain are named fragments. Each fragment:
+- Starts with `#`
+- Has a unique name
+- Contains a value or expression
+
+Simple fragment examples:
+```rain
+#decimals 18
+#symbol "RAIN"
+```
+
+Fragments can reference other fragments:
+```rain
+#base-amount 1000
+#total-supply mul(base-amount 1000000)
+```
+
+Multi-line fragments are supported:
+```rain
+#calculate-price
+amount: 100,
+price: div(total supply),
+value: mul(amount price);
+```
+
+### Elided Fragments
+
+You can create placeholder fragments that must be defined later using `!`:
+```rain
+#start-time !must set a valid start timestamp
+#duration mul(start-time 86400)  # 24 hours in seconds
+```
 
 ## Namespaces
-Namespaces are just branches on a tree of names. `.rain` document use `.` to delimit names as it often brings a kind of "path", "drilling down" or "chaining" feeling in the wild.Namespaces are the standard way to handle name collisions in basically every language and data structure.
 
-Imports take the form of `@<namespace><whitespace><hash>` OR `@<hash>`. Example : 
-```
-#a 1
+Namespaces help organize and avoid naming conflicts in your code. They use `.` for path separation, similar to file systems or package names in other languages.
+
+### Importing with Namespaces
+
+Import syntax: `@<namespace> <hash>` or just `@<hash>`
+
+Example importing into a namespace:
+```rain
+#constants
+max-supply: 1000000,
+decimals: 18;
 ---
-#a 2
-/* import the above document */
-@b 0x..
+@token 0x123...  # Import previous document into 'token' namespace
+#configure
+supply: token.constants.max-supply,
+scale: exp(10 token.constants.decimals);
 ```
 
-If the namespace is ommitted that means "import into the current namespace".
-`.` also means "current namespace" where it needs to, or benefits from, being made explicit, much like "current directory" in a file system.
+When no namespace is specified, imports go into the current namespace. The `.` character can explicitly reference the current namespace when needed.
 
-Any namespace specified in an import will be prepended to all the names found in the imported document. Example:
-```
-#pi
-/* pi is roughly 3 */
-3
----
-/* import .rain doc above */
-@math 0xdeadbeef...
-#two-pies
-add(math.pi math.pi)
-```
-This expands to : 
-```
-#math.pi
-/* pi is roughly 3 */
-3
-#two-pies
-add(math.pi math.pi)
-```
+### Namespace Resolution
 
-### Rebindings Names
-
-Imports allow explicit dynamic (re)binding of values upon import. Rebinding enables imported fragments to adapt to the specific needs of the importing file by overriding or linking their values to local definitions.
-
-#### Example 1: Default Behavior
+Imports automatically prepend the namespace to imported names:
 
 ```rain
-#pi
-3
-#two-pies
-add(pi pi)
+#config
+price: 100;
 ---
-#pi
-4
+@market 0xabc...
+#total mul(market.config.price 50)
+```
+
+This helps prevent naming collisions while keeping code organized and readable.
+
+# Rebinding Names in dotrain
+
+## Understanding Rebinding
+
+Rebinding is a powerful feature in dotrain that allows you to modify imported fragments dynamically. When importing code, you can:
+- Override values from imported fragments
+- Link imported values to local definitions
+- Resolve naming conflicts elegantly
+
+## Basic Rebinding Examples
+
+### 1. Default Import Behavior
+
+Without explicit rebinding, imported fragments maintain their original values:
+
+```rain
+# Original document
+#pi 3
+#two-pies add(pi pi)
+---
+# Importing document
+#pi 4
 @x 0x..
 ```
 
-This will expand to:
+This expands to:
+```rain
+#pi 4             # Local definition
+#x.pi 3           # Original imported value
+#x.two-pies add(x.pi x.pi)  # Uses imported pi (3)
+```
+
+The imported code maintains its original value (`3`) while local code uses the new value (`4`).
+
+### 2. Direct Value Rebinding 
+
+You can explicitly override imported values:
 
 ```rain
-#pi
-4
-#x.pi
-3
-#x.two-pies
-add(x.pi x.pi)
+# Original document
+#pi 3
+#two-pies add(pi pi)
+---
+# Importing document with rebinding
+#pi 4
+@x 0x.. pi 4  # Rebind pi to 4
 ```
 
-The local `#pi` is redefined as `4` in the second document, while the imported namespace `x` retains its original definition of `pi` as `3`. As a result, `x.two-pies` evaluates to `add(3 3)` because it refers to `x.pi`.
+Expands to:
+```rain
+#pi 4
+#x.pi 4                    # Overridden to 4
+#x.two-pies add(x.pi x.pi) # Uses new value (4)
+```
 
----
+### 3. Reference Rebinding
 
-#### Example 2: Rebinding `pi` Directly
+You can bind imported values to local references:
 
 ```rain
-#pi
-3
-#two-pies
-add(pi pi)
+# Original document
+#pi 3
+#two-pies add(pi pi)
 ---
-#pi
-4
-@x 0x.. pi 4
+# Importing document with reference rebinding
+#pi 4
+@x 0x.. pi pi  # Bind to local pi
 ```
 
-This will expand to:
+Expands to:
+```rain
+#pi 4
+#x.pi pi                   # Links to local pi
+#x.two-pies add(x.pi x.pi) # Uses local pi (4)
+```
+
+### 4. Explicit Path Rebinding
+
+Use `.` to explicitly specify namespace paths:
 
 ```rain
-#pi
-4
-#x.pi
-4
-#two-pies
-add(x.pi x.pi)
+# Original document
+#pi 3
+#two-pies add(pi pi)
+---
+# Importing document with explicit path
+#pi 4
+@x 0x.. .pi pi  # Explicitly bind to current namespace
 ```
 
-Here, the rebind directive `pi 4` explicitly overwrites the value of `x.pi` with `4`. Consequently, `x.two-pies` evaluates to `add(4 4)` because of the rebinding.
+Expands to:
+```rain
+#pi 4
+#x.pi pi                   # Explicitly linked to local pi
+#x.two-pies add(x.pi x.pi) # Uses local pi (4)
+```
 
----
+## Key Points
 
-#### Example 3: Using Local `pi`
+- Rebinding happens during import with `@namespace hash name value`
+- You can bind to literal values or reference other fragments
+- Use `.` for explicit namespace paths
+- Rebinding affects all uses of the rebound name in imported code
+- Original code remains unchanged - rebinding only affects the importing context
+
+This powerful feature allows you to:
+- Customize imported code for your specific needs
+- Handle naming conflicts gracefully
+- Create flexible, reusable code components
+
+Here's the edited and restructured section on importing words in dotrain:
+
+# Working with Words in dotrain
+
+## Understanding Words
+
+Words are the core operations available in dotrain, similar to functions in other languages. They can come from:
+- Internal interpreters (built-in operations)
+- External contracts (custom operations)
+
+## Basic Word Import
+
+The simplest way to import words is directly:
 
 ```rain
-#pi
-3
-#two-pies
-add(pi pi)
----
-#pi
-4
-@x 0x.. pi pi
-```
-
-This will expand to:
-
-```rain
-#pi
-4
-#x.pi
-pi
-#two-pies
-add(x.pi x.pi)
-```
-
-In this case, the rebind directive `pi pi` links `x.pi` to the local `#pi`, which is defined as `4`. Therefore, `x.two-pies` evaluates to `add(4 4)`.
-
----
-
-#### Example 4: Explicit Path Rebinding
-
-Rebinding Names
-
-Imports allow explicit dynamic (re)binding of values upon import. Rebinding enables imported fragments to adapt to the specific needs of the importing file by overriding or linking their values to local definitions.
-
-Example 1:
-```
-#pi
-3
-#two-pies
-add(pi pi)
----
-#pi
-4
-@x 0x..
-```
-This will expand to:
-```
-#pi
-4
-#x.pi
-3
-#x.two-pies
-add(x.pi x.pi)
-```
-The local #pi is redefined as 4 in the second document, while the imported namespace x retains its original definition of pi as 3. As a result, x.two-pies evaluates to add(3 3) because it refers to x.pi.
-
-Example 2: Rebinding pi Directly
-```
-#pi
-3
-#two-pies
-add(pi pi)
----
-#pi
-4
-@x 0x.. pi 4
-```
-This will expand to:
-```
-#pi
-4
-#x.pi
-4
-#two-pies
-add(x.pi x.pi)
-```
-Here, the rebind directive pi 4 explicitly overwrites the value of x.pi with 4. Consequently, x.two-pies evaluates to add(4 4) because of the rebinding.
-
-Example 3: Using Local pi
-```
-#pi
-3
-#two-pies
-add(pi pi)
----
-#pi
-4
-@x 0x.. pi pi
-```
-This will expand to:
-```
-#pi
-4
-#x.pi
-pi
-#two-pies
-add(x.pi x.pi)
-```
-In this case, the rebind directive pi pi links x.pi to the local #pi, which is defined as 4. Therefore, x.two-pies evaluates to add(4 4).
-
-Example 4: Explicit Path Rebinding
-```
-#pi
-3
-#two-pies
-add(pi pi)
----
-#pi
-4
-@x 0x.. .pi pi
-```
-This will expand to:
-```
-#pi
-4
-#x.pi
-pi
-#two-pies
-add(x.pi x.pi)
-```
-Here, the . prefix explicitly specifies the current namespace for rebinding. x.pi is rebound to the local #pi, which is 4, making x.two-pies evaluate to add(4 4).
-
----
-
-### Importing Words
-Words in .rain files refer to specific operations or functions that can be executed. These words are tied to either an internal interpreter or an external contract and must be explicitly imported to use.
-
-#### Example 1: Basic Import of Words
-```
-/* import words */
+# Import interpreter words
 @ 0x123...
 
-/* use add word */
-#a add(1 2)
+# Use imported word 'add'
+#result add(1 2)
 ```
-Here:
 
-The `@ 0x123...` imports metadata that defines the word `add`.
+This makes all words from the interpreter at `0x123...` available in your code.
 
-The fragment `#a` uses the `add` operation to compute `1 + 2`.
+## Managing Word Collisions
 
----
+### The Problem
 
-#### Example 2: Handling Word Collisions
+When importing words from multiple sources, naming conflicts can occur:
 
-If words from different interpreters are imported, they can cause ambiguity. For example:
-```
-/* import words from interpreter A */
+```rain
+# Import first interpreter
 @ 0x123...
-#a add(1 2)
+#calc-a add(1 2)
 ---
-/* import words from interpreter B */
+# Import second interpreter
 @ 0x456...
 
-/* import document A */
-@docA 0x...
-
-/* ambiguous use of add */
-#b add(3 4)
+# PROBLEM: Which 'add' are we using?
+#calc-b add(3 4)  # Ambiguous!
 ```
-This setup introduces ambiguity because both interpreters define `add`, and it is unclear which one is used in `#b`. To resolve this, words can be elided:
+
+### The Solution: Namespaced Imports
+
+Use dedicated namespaces to avoid conflicts:
+
+```rain
+# Import interpreters with namespaces
+@math-v1 0x123...
+@math-v2 0x456...
+
+# Elide first interpreter's words
+@imported-code 0x789...
+  math-v1 !
+
+# Now unambiguously uses math-v2's add
+#result add(3 4)
 ```
-/* import words from interpreter A */
-@wordsA 0x123...
 
-/* import words from interpreter B */
-@wordsB 0x456...
+## External Words
 
-/* elide words from interpreter A */
-@docA 0x..
- wordsA !
+External words (from other contracts) should always use explicit namespacing:
 
-/* use add from interpreter B */
-#b add(3 4)
+```rain
+# Import external operations
+@chainlink 0x789...
+
+# Use external word with clear namespace
+#price chainlink.getPrice("ETH-USD")
 ```
-Here:
 
-Words from `interpreter A` are explicitly elided using `wordsA !`.
+Best practices:
+- Always namespace external words
+- Keep external operations in dedicated imports
+- Be explicit about which operations come from where
 
-`#b` now uses the `add` word from `interpreter B` without ambiguity.
+## Key Concepts
 
----
+### Word Resolution
 
-#### Example 3: Namespacing External Words
+1. Words without namespaces come from the current interpreter
+2. Namespaced words like `extern.word` come from their specified source
+3. Elided words become unavailable and must be explicitly rebound
 
-External words (from contracts) follow the same namespace rules as other fragments. For clarity and to avoid collisions, they should be placed in dedicated namespaces:
+### Import Best Practices
+
+- Use clear, descriptive namespaces
+- Keep interpreter words separate from external words
+- Document word sources in comments
+- Resolve ambiguities through elision and explicit namespacing
+
+Example showing all concepts:
+
+```rain
+# Import internal words
+@math 0x123...
+
+# Import external price feed
+@oracle 0x456...
+
+# Define calculation using both
+#token-price
+  base-price: oracle.getPrice("TOKEN-USD"),
+  fee: math.mul(base-price 0.003),  # 0.3% fee
+  final: math.add(base-price fee);
 ```
-/* import external words under a namespace */
-@extern 0x789...
 
-/* use an external word */
-#result extern.someWord(5 10)
-```
-Here:
-
-`extern.someWord` explicitly calls the external operation `someWord` under the namespace `extern`.
-
-This prevents conflicts with other similarly named operations.
-
----
-#### Summary
-
-Importing words allows .rain files to use operations defined in interpreters or external contracts. Care must be taken to:
-
-Avoid ambiguity by eliding conflicting words.
-
-Use namespaces for clarity, especially with external words.
-
-By managing imports and namespaces effectively, .rain files remain modular and robust.
-
----
-
-## Summary
-
-- `.rain` files are a powerful format for creating auditable, composable code in decentralized systems.
-- They prioritize structure, clarity, and extensibility.
-- With features like named fragments, namespaces, and imports, `.rain` files are easy to modularize and integrate into workflows.
-
-Explore `.rain` files to build robust, trustable blockchain applications!
+This structure keeps code clear and maintainable while avoiding naming conflicts.
 
 
